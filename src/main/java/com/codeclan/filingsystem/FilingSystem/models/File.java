@@ -1,5 +1,8 @@
 package com.codeclan.filingsystem.FilingSystem.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
@@ -16,9 +19,15 @@ public class File {
     @Column(name = "size")
     private int size;
 
-    public File(String extension, int size) {
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "file_id", nullable = false)
+    private Folder folder;
+
+    public File(String extension, int size, Folder folder) {
         this.extension = extension;
         this.size = size;
+        this.folder = folder;
     }
 
     public File () {
@@ -47,5 +56,13 @@ public class File {
 
     public void setSize(int size) {
         this.size = size;
+    }
+
+    public Folder getFolder() {
+        return folder;
+    }
+
+    public void setFolder(Folder folder) {
+        this.folder = folder;
     }
 }
